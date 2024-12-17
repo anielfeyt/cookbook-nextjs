@@ -24,13 +24,7 @@ interface IFormInput {
   image: "";
 }
 
-const categories = [
-  { value: "Main", label: "Main" },
-  { value: "Lunch", label: "Lunch" },
-  { value: "Dessert", label: "Dessert" },
-];
-
-export default function CreateForm() {
+export default function CreateForm({ categories }) {
   const modalRef = React.useRef<HTMLDialogElement>(null);
   const showModal = useCallback(() => {
     modalRef.current?.showModal();

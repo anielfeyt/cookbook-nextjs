@@ -23,17 +23,12 @@ interface IFormInput {
   image: File | string | null;
 }
 
-const categories = [
-  { value: "Main", label: "Main" },
-  { value: "Lunch", label: "Lunch" },
-  { value: "Dessert", label: "Dessert" },
-];
-
 type UpdateFormProps = {
   recipe: Recipe;
+  categories: { label: string; value: string }[];
 };
 
-export default function UpdateForm({ recipe }: UpdateFormProps) {
+export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
   //   console.log(recipe);
   const router = useRouter();
   const methods = useForm({
