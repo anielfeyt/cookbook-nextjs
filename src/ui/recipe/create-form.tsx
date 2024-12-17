@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
 import FileInput from "@/components/Form/Controls/FileInput";
 import Input from "@/components/Form/Controls/Input";
 import List from "@/components/Form/Controls/List";
@@ -11,16 +11,17 @@ import { Recipe } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/services/supabase/client";
-import { updateRecipe } from "@/queries/recipe";
+import { addRecipe } from "@/queries/recipe";
+import { Modal } from "react-daisyui";
 
 interface IFormInput {
-  title: string;
-  timeToMake: string;
-  category: string;
-  description: string;
-  ingredients: string[];
-  instructions: string;
-  image: File | string | null;
+  title: "";
+  timeToMake: "";
+  category: "Main";
+  description: "";
+  ingredients: [];
+  instructions: "";
+  image: "";
 }
 
 const categories = [
@@ -29,27 +30,32 @@ const categories = [
   { value: "Dessert", label: "Dessert" },
 ];
 
-type UpdateFormProps = {
-  recipe: Recipe;
-};
+export default function CreateForm() {
+  const modalRef = React.useRef<HTMLDialogElement>(null);
+  const showModal = useCallback(() => {
+    modalRef.current?.showModal();
+  }, [modalRef]);
 
-export default function UpdateForm({ recipe }: UpdateFormProps) {
-  //   console.log(recipe);
+  const hideModal = useCallback(() => {
+    modalRef.current?.close();
+  }, [modalRef]);
+
   const router = useRouter();
   const methods = useForm({
     defaultValues: {
-      title: recipe.title,
-      timeToMake: recipe.timeToMake,
-      category: recipe.categoryName,
-      description: recipe.description,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
+      title: "",
+      timeToMake: "",
+      category: "Main",
+      description: "",
+      ingredients: [],
+      instructions: "",
       image: "",
     },
     reValidateMode: "onSubmit",
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data, e) => {
+    showModal();
     const supabase = createClient();
 
     const {
@@ -69,13 +75,11 @@ export default function UpdateForm({ recipe }: UpdateFormProps) {
         filePath = `${userId}/images/recipe-${milliseconds}.jpg`;
 
         await uploadS3File(filePath, file);
-      } else {
-        filePath = recipe.image as string;
       }
 
+      // TODO: add serving size
       // 2. Add the recipe to the database
-      const recipeData: Omit<Recipe, "createdAt"> = {
-        id: recipe.id,
+      const recipeData: Omit<Recipe, "id"> = {
         title: data.title,
         timeToMake: data.timeToMake,
         categoryName: data.category,
@@ -84,12 +88,13 @@ export default function UpdateForm({ recipe }: UpdateFormProps) {
         instructions: data.instructions,
         image: filePath,
         userId: userId as string,
+        createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      await updateRecipe(recipeData, userId as string);
+      await addRecipe(recipeData);
+      hideModal();
       router.push("/recipes/me");
-      // TODO: add user feedback that recipe was updated
     } catch (error) {
       console.error(error);
     }
@@ -157,7 +162,7 @@ export default function UpdateForm({ recipe }: UpdateFormProps) {
 
           <div className="flex gap-2 mt-10">
             <button className="btn btn-accent" type="submit">
-              Update Recipe
+              Create Recipe
             </button>
 
             <Link className="btn btn-neutral" href={`/recipes/me`} replace>
@@ -166,6 +171,12 @@ export default function UpdateForm({ recipe }: UpdateFormProps) {
           </div>
         </form>
       </FormProvider>
+
+      <Modal ref={modalRef} id="create_modal" backdrop className="max-w-xs">
+        <Modal.Body>
+          <p className="text-center">Creating...</p>
+        </Modal.Body>
+      </Modal>
     </article>
   );
 }

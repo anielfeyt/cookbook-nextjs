@@ -4,7 +4,7 @@ import { login } from "./actions";
 export default function LoginPage() {
   return (
     <div className="container mx-auto px-4 text-center max-w-screen-sm">
-      {/* <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -20,10 +20,7 @@ export default function LoginPage() {
           />
         </svg>
       </div>
-      <h1 className="text-5xl font-bold mb-5">Log In</h1>
-      <form method="post" action="/auth/google">
-        <button className="btn btn-primary">Sign In with Google</button>
-      </form> */}
+      <h1 className="text-5xl font-bold mb-10">Sign in with Google</h1>
       <button className="btn btn-lg btn-outline" onClick={login}>
         Log in
       </button>

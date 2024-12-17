@@ -1,5 +1,6 @@
 "use server";
 import { prisma } from "@/services/prisma";
+import { kebabCase } from "@/utils/fn";
 import { Recipe } from "@prisma/client";
 
 export async function addRecipe(data: Omit<Recipe, "id">) {
@@ -40,9 +41,7 @@ export async function getAllRecipes() {
         : null;
 
       // Create a string URL from the title
-      const slug = encodeURIComponent(
-        recipe.title.trim().replace(/\s+/g, "-").toLowerCase()
-      );
+      const slug = kebabCase(recipe.title);
       return { ...recipe, image: imageURL, slug };
     });
   } catch (error) {
@@ -67,7 +66,11 @@ export async function getRecipesByUserId(userId: string) {
       const imageURL = recipe.image
         ? `${process.env.AWS_BUCKET_READ_URL}/${recipe.image}`
         : null;
-      return { ...recipe, image: imageURL };
+
+      // Create a string URL from the title
+      const slug = kebabCase(recipe.title);
+
+      return { ...recipe, image: imageURL, slug };
     });
   } catch (error) {
     console.error(error);

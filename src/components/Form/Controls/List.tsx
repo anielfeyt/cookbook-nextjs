@@ -31,8 +31,6 @@ function SortableItem({ value, id, setItems }) {
     attributes,
     listeners,
     setNodeRef,
-    setDroppableNodeRef,
-    setDraggableNodeRef,
     setActivatorNodeRef,
     transform,
     transition,
@@ -43,8 +41,8 @@ function SortableItem({ value, id, setItems }) {
     setItems((prev) => prev.map((item, i) => (i === index ? value : item)));
   };
 
-  const handleItemDelete = (index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
+  const handleItemDelete = (currentItem: string) => {
+    setItems((prev) => prev.filter((item) => item !== currentItem));
   };
 
   const style = {
@@ -53,7 +51,7 @@ function SortableItem({ value, id, setItems }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} {...attributes}>
       <div className="join w-full">
         <input
           ref={inputRef}
@@ -64,7 +62,8 @@ function SortableItem({ value, id, setItems }) {
           onBlur={(e) => handleItemAddUpdate(id, e.target.value)}
         />
         <button
-          // ref={setActivatorNodeRef}
+          ref={setActivatorNodeRef}
+          {...listeners}
           type="button"
           className="btn btn-neutral join-item"
         >
@@ -95,55 +94,14 @@ function SortableItem({ value, id, setItems }) {
   );
 }
 
-// function SortableItem({ value, id, setItems }) {
-//   const {
-//     attributes,
-//     listeners,
-//     setNodeRef,
-//     setDroppableNodeRef,
-//     setDraggableNodeRef,
-//     setActivatorNodeRef,
-//     transform,
-//     transition,
-//   } = useSortable({ id });
-
-//   const style = {
-//     transform: CSS.Transform.toString(transform),
-//     transition,
-//   };
-
-//   return (
-//     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-//       {value}
-
-//       <button
-//         ref={setActivatorNodeRef}
-//         type="button"
-//         className="btn btn-neutral join-item"
-//       >
-//         <svg
-//           xmlns="http://www.w3.org/2000/svg"
-//           fill="none"
-//           viewBox="0 0 24 24"
-//           strokeWidth="1.5"
-//           stroke="currentColor"
-//           className="size-6"
-//         >
-//           <path
-//             strokeLinecap="round"
-//             strokeLinejoin="round"
-//             d="M4.499 8.248h15m-15 7.501h15"
-//           />
-//         </svg>
-//       </button>
-//     </div>
-//   );
-// }
-
-function List(
-  { name, rules, label, labelProps, inputProps, type = "text" }: InputProps,
-  ref: React.Ref<HTMLInputElement>
-) {
+function List({
+  name,
+  rules,
+  label,
+  labelProps,
+  inputProps,
+  type = "text",
+}: InputProps) {
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },
@@ -156,7 +114,6 @@ function List(
   const internalRef = React.useRef<HTMLInputElement>(null);
   const [items, setItems] = React.useState<string[]>(field.value || []);
 
-  const [activeId, setActiveId] = React.useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -172,9 +129,6 @@ function List(
     }
   };
 
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
-  }
   function handleDragEnd(event: any) {
     const { active, over } = event;
 
@@ -231,7 +185,6 @@ function List(
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
@@ -253,4 +206,4 @@ function List(
   );
 }
 
-export default React.forwardRef(List);
+export default List;

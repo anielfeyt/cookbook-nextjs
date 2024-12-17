@@ -22,12 +22,17 @@ export default async function UserRecipesPage() {
       <div className="mb-4">
         <h1 className="text-5xl font-bold mb-5">My Recipes</h1>
       </div>
-      {(!recipes || recipes.length === 0) && <p>No recipes found</p>}
       <div className="mb-4">
         <Link className="btn btn-primary" href="/recipe/create">
           Create Recipe
         </Link>
       </div>
+      {(!recipes || recipes.length === 0) && (
+        <p>
+          You don&apos;t have any recipes. Start by creating one or saving some
+          from the feed.
+        </p>
+      )}
       {recipes && (
         <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
           {recipes.map((recipe) => (

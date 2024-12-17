@@ -57,7 +57,7 @@ export default async function RecipePage({ params }: Props) {
             <span className="hidden sm:inline">Back</span>
           </Link>
           <div className="flex gap-3">
-            {isUserRecipe && <ActionBar id={id} slug={slug} />}
+            <ActionBar id={id} slug={slug} isUserRecipe={isUserRecipe} />
           </div>
         </div>
         <div className="grid lg:grid-cols-2 gap-4 mb-8">
