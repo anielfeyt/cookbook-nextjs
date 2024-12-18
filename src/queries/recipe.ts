@@ -89,12 +89,19 @@ export async function getRecipeById(recipeId: string) {
       },
     });
 
+    if (!recipe) {
+      return null;
+    }
+
     // Add the AWS S3 bucket URL to the image
     const imageURL = recipe?.image
       ? `${process.env.AWS_BUCKET_READ_URL}/${recipe?.image}`
       : null;
 
-    return { ...recipe, image: imageURL } as Recipe;
+    // Create a string URL from the title
+    const slug = kebabCase(recipe.title);
+
+    return { ...recipe, image: imageURL, slug } as Recipe & { slug: string };
   } catch (error) {
     console.error(error);
     throw new Response(`Failed to get the recipe with ID: ${recipeId}`, {
@@ -118,7 +125,7 @@ export async function updateRecipe(
       },
     });
     console.log("Recipe updated", response);
-    return response;
+    return { message: "Recipe updated", status: 200 };
   } catch (error) {
     console.error(error);
     throw new Response("Failed to update the recipe", { status: 500 });

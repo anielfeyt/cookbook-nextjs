@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { getRecipeById } from "@/queries/recipe";
+import { getAllRecipes, getRecipeById } from "@/queries/recipe";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/services/supabase/server";
 import ActionBar from "@/ui/recipe/actionbar";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ id: string; slug: string }>;
@@ -22,11 +23,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#generating-static-params
+export async function generateStaticParams() {
+  const recipes = await getAllRecipes();
+
+  return recipes.map((recipe) => ({
+    id: recipe.id.toString(),
+    slug: recipe.slug,
+  }));
+}
+
 export default async function RecipePage({ params }: Props) {
-  // TODO: ensure you cannot type any string in the [slug] part of the URL
   const { id, slug } = await params;
   const recipe = await getRecipeById(id);
   const supabase = await createClient();
+
+  if (recipe?.slug !== slug) {
+    notFound();
+  }
 
   const {
     data: { user },

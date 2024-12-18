@@ -60,4 +60,4 @@ function FileInput({
   );
 }
 
-export default React.forwardRef(FileInput);
+export default FileInput;

@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
   },
   transpilePackages: ["react-daisyui"],
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;

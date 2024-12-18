@@ -10,10 +10,14 @@ type InputProps = {
   rules?: Parameters<typeof useController>[0]["rules"];
 };
 
-function Input(
-  { name, rules, label, labelProps, inputProps, type = "text" }: InputProps,
-  ref: React.Ref<HTMLInputElement>
-) {
+function Input({
+  name,
+  rules,
+  label,
+  labelProps,
+  inputProps,
+  type = "text",
+}: InputProps) {
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },
@@ -56,4 +60,4 @@ function Input(
   );
 }
 
-export default React.forwardRef(Input);
+export default Input;

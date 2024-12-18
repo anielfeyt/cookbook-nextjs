@@ -20,10 +20,8 @@ export default function ActionBar({ isUserRecipe, id, slug }: ActionBarProps) {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteRecipe(id);
-      console.log("recipe has been deleted", response);
+      await deleteRecipe(id);
       router.push("/recipes/me");
-      // TODO: add client feedback on screen
     } catch (error) {
       console.error(error);
     }

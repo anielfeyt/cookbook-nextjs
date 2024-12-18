@@ -9,10 +9,7 @@ type InputProps = {
   inputProps?: React.HTMLProps<HTMLTextAreaElement>;
 };
 
-function Textarea(
-  { name, rules, label, labelProps, inputProps }: InputProps,
-  ref: React.Ref<HTMLTextAreaElement>
-) {
+function Textarea({ name, rules, label, labelProps, inputProps }: InputProps) {
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },
@@ -53,4 +50,4 @@ function Textarea(
   );
 }
 
-export default React.forwardRef(Textarea);
+export default Textarea;

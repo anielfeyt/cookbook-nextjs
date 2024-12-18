@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/services/supabase/client";
 import { updateRecipe } from "@/queries/recipe";
+import { Alert, Toast } from "react-daisyui";
 
 interface IFormInput {
   title: string;
@@ -30,7 +31,7 @@ type UpdateFormProps = {
 };
 
 export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
-  //   console.log(recipe);
+  const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const methods = useForm({
     defaultValues: {
@@ -90,9 +91,15 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
         updatedAt: new Date(),
       };
 
-      await updateRecipe(recipeData, userId as string);
-      router.push("/recipes/me");
-      // TODO: add user feedback that recipe was updated
+      const response = await updateRecipe(recipeData, userId as string);
+      if (response && response.status === 200) {
+        setOpen(true);
+
+        setTimeout(() => {
+          setOpen(false);
+          router.push("/recipes/me");
+        }, 1500);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -178,6 +185,14 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
           </div>
         </form>
       </FormProvider>
+
+      {open && (
+        <Toast vertical="bottom" horizontal="center">
+          <Alert status="success" className="flex justify-center items-center">
+            Updated
+          </Alert>
+        </Toast>
+      )}
     </article>
   );
 }

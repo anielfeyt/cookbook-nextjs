@@ -10,10 +10,14 @@ type InputProps = {
   options: { value: string | number; label: string }[];
 };
 
-function Select(
-  { name, rules, label, labelProps, inputProps, options }: InputProps,
-  ref: React.Ref<HTMLSelectElement>
-) {
+function Select({
+  name,
+  rules,
+  label,
+  labelProps,
+  inputProps,
+  options,
+}: InputProps) {
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },
@@ -60,4 +64,4 @@ function Select(
   );
 }
 
-export default React.forwardRef(Select);
+export default Select;

@@ -77,7 +77,6 @@ export default function CreateForm({ categories }: CreateFormProps) {
         await uploadS3File(filePath, file);
       }
 
-      // TODO: add serving size
       // 2. Add the recipe to the database
       let servingSize = 1;
       if (Number(data.servingSize) > 0) {
