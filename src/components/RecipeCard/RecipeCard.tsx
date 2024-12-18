@@ -27,7 +27,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
       <h2 className="text-base sm:text-xl font-medium mb-1 line-clamp-1">
         {title}
       </h2>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <div className="badge badge-secondary flex gap-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"

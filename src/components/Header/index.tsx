@@ -47,7 +47,12 @@ function Header({ user }: HeaderProps, ref: React.Ref<HTMLHeadElement>) {
       <div className="flex gap-4 items-center justify-between">
         <div>
           <Link href="/">
-            <Image src="/vercel.svg" alt="Resepte" width={50} height={50} />
+            <Image
+              src="/images/logo.svg"
+              alt="Resepte"
+              width={50}
+              height={50}
+            />
           </Link>
         </div>
         <div>

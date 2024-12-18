@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { createClient } from "@/services/supabase/server";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const poppins = Poppins({
+  display: "swap",
+  weight: ["100", "400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -30,9 +26,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" data-theme="retro">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${poppins.className} antialiased`}>
         <Header user={data.user} />
         <main className="min-h-dvh mb-8 mt-20 sm:mt-32">{children}</main>
         <footer className="py-4 px-4 bg-base-200 text-center">
