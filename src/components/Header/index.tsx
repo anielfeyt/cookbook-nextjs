@@ -1,13 +1,32 @@
 "use client";
 
 import { createClient } from "@/services/supabase/client";
+import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-function Header({ user }, ref: React.Ref<HTMLHeadElement>) {
+type HeaderProps = {
+  user: User | null;
+};
+
+function Header({ user }: HeaderProps, ref: React.Ref<HTMLHeadElement>) {
   const [open, setOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!user);
+  const router = useRouter();
+
+  const checkAuthStatus = async () => {
+    const supabase = createClient();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    setIsAuthenticated(!!session);
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
@@ -15,9 +34,9 @@ function Header({ user }, ref: React.Ref<HTMLHeadElement>) {
 
   const handleLogout = async () => {
     const supabase = createClient();
-
     await supabase.auth.signOut();
-    redirect("/");
+    setIsAuthenticated(false);
+    router.push("/");
   };
 
   return (
@@ -34,7 +53,7 @@ function Header({ user }, ref: React.Ref<HTMLHeadElement>) {
         <div>
           <nav className="hidden sm:inline">
             <ul className="flex gap-1">
-              {user ? (
+              {isAuthenticated ? (
                 <>
                   <li>
                     <Link
@@ -78,13 +97,24 @@ function Header({ user }, ref: React.Ref<HTMLHeadElement>) {
             </ul>
           </nav>
           <div className="sm:hidden">
-            <button onClick={toggleMenu}>
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 40 }}
+            <button
+              onClick={toggleMenu}
+              className="btn ring-0 outline-none shadow-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-10"
               >
-                &#xe5d2;
-              </span>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
             </button>
             <div
               className={`transition-all fixed bg-slate-600/95 backdrop-blur-sm top-0 w-full h-dvh ${
@@ -93,12 +123,20 @@ function Header({ user }, ref: React.Ref<HTMLHeadElement>) {
             >
               <div className="flex justify-end p-4">
                 <button onClick={toggleMenu}>
-                  <span
-                    className="material-symbols-outlined"
-                    style={{ fontSize: 40 }}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-10"
                   >
-                    &#xe5cd;
-                  </span>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18 18 6M6 6l12 12"
+                    />
+                  </svg>
                 </button>
               </div>
               <nav className="h-full">
@@ -107,19 +145,41 @@ function Header({ user }, ref: React.Ref<HTMLHeadElement>) {
                     <>
                       <li>
                         <button onClick={toggleMenu} className="h-16">
-                          <Link href="/recipes/me">
-                            <span className="material-symbols-outlined">
-                              restaurant_menu
-                            </span>{" "}
+                          <Link href="/recipes/me" className="flex gap-1">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="size-8"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+                              />
+                            </svg>
                             My Recipes
                           </Link>
                         </button>
                       </li>
                       <li>
-                        <button onClick={handleLogout}>
-                          <span className="material-symbols-outlined">
-                            logout
-                          </span>{" "}
+                        <button onClick={handleLogout} className="flex gap-1">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-8"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
+                            />
+                          </svg>
                           Logout
                         </button>
                       </li>

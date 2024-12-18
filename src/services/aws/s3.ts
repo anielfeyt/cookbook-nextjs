@@ -5,7 +5,6 @@ import {
   ListBucketsCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
-import { createClient } from "../supabase/client";
 
 export async function listBuckets() {
   const client = new S3Client({
@@ -22,7 +21,7 @@ export async function listBuckets() {
     const command = new ListBucketsCommand();
     const data = await client.send(command);
     console.log(data);
-  } catch (err) {
+  } catch (err: any) {
     const { requestId, cfId, extendedRequestId } = err.$metadata;
     console.error(err);
     console.log({ requestId, cfId, extendedRequestId });

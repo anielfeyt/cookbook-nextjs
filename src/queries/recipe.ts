@@ -94,7 +94,7 @@ export async function getRecipeById(recipeId: string) {
       ? `${process.env.AWS_BUCKET_READ_URL}/${recipe?.image}`
       : null;
 
-    return { ...recipe, image: imageURL };
+    return { ...recipe, image: imageURL } as Recipe;
   } catch (error) {
     console.error(error);
     throw new Response(`Failed to get the recipe with ID: ${recipeId}`, {

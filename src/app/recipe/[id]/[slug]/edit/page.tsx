@@ -3,6 +3,7 @@ import { getRecipeById } from "@/queries/recipe";
 import { createClient } from "@/services/supabase/server";
 import UpdateForm from "@/ui/recipe/update-form";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {
@@ -26,6 +27,8 @@ export default async function EditRecipePage({ params }: Props) {
   const { id } = await params;
   const recipe = await getRecipeById(id);
   const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+  const isUserRecipe = recipe?.userId === data.user?.id;
 
   const response = await getAllCategories();
 
@@ -34,14 +37,8 @@ export default async function EditRecipePage({ params }: Props) {
     value: item.name,
   }));
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const isUserRecipe = recipe?.userId === user?.id;
-
-  if (!isUserRecipe || !recipe) {
-    return <div>Not authorized</div>;
+  if (error || !isUserRecipe || !recipe) {
+    redirect("/login");
   }
 
   return (

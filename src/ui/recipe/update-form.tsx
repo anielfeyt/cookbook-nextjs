@@ -16,8 +16,9 @@ import { updateRecipe } from "@/queries/recipe";
 interface IFormInput {
   title: string;
   timeToMake: string;
+  servingSize: number | null;
   category: string;
-  description: string;
+  description: string | null;
   ingredients: string[];
   instructions: string;
   image: File | string | null;
@@ -35,6 +36,7 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
     defaultValues: {
       title: recipe.title,
       timeToMake: recipe.timeToMake,
+      servingSize: recipe.servingSize || 1,
       category: recipe.categoryName,
       description: recipe.description,
       ingredients: recipe.ingredients,
@@ -69,10 +71,16 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
       }
 
       // 2. Add the recipe to the database
+      let servingSize = 1;
+      if (Number(data.servingSize) > 0) {
+        servingSize = Number(data.servingSize);
+      }
+
       const recipeData: Omit<Recipe, "createdAt"> = {
         id: recipe.id,
         title: data.title,
         timeToMake: data.timeToMake,
+        servingSize: servingSize,
         categoryName: data.category,
         description: data.description,
         ingredients: data.ingredients,
@@ -107,6 +115,15 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
               name="timeToMake"
               type="time"
               rules={{ required: "Time is required" }}
+            />
+          </div>
+
+          <div className="mb-4">
+            <Input
+              label="Serving Size"
+              name="servingSize"
+              rules={{ required: "Serving Size is required" }}
+              type="number"
             />
           </div>
 

@@ -10,10 +10,14 @@ type InputProps = {
   type?: React.HTMLProps<HTMLInputElement>["type"];
 };
 
-function FileInput(
-  { label, name, rules, labelProps, inputProps, type = "file" }: InputProps,
-  ref: React.Ref<HTMLInputElement>
-) {
+function FileInput({
+  label,
+  name,
+  rules,
+  labelProps,
+  inputProps,
+  type = "file",
+}: InputProps) {
   const {
     field,
     fieldState: { invalid, isTouched, isDirty, error },

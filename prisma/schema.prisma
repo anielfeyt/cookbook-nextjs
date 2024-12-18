@@ -21,6 +21,7 @@ model Recipe {
   ingredients String[]
   instructions String
   timeToMake  String
+  servingSize Int?
   image       String?
   category    Category @relation(fields: [categoryName], references: [name])
   categoryName String

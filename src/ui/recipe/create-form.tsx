@@ -15,16 +15,21 @@ import { addRecipe } from "@/queries/recipe";
 import { Modal } from "react-daisyui";
 
 interface IFormInput {
-  title: "";
-  timeToMake: "";
-  category: "Main";
-  description: "";
-  ingredients: [];
-  instructions: "";
-  image: "";
+  title: string;
+  timeToMake: string;
+  servingSize: number | null;
+  category: string;
+  description: string;
+  ingredients: string[];
+  instructions: string;
+  image: File | string | null;
 }
 
-export default function CreateForm({ categories }) {
+type CreateFormProps = {
+  categories: { label: string; value: string }[];
+};
+
+export default function CreateForm({ categories }: CreateFormProps) {
   const modalRef = React.useRef<HTMLDialogElement>(null);
   const showModal = useCallback(() => {
     modalRef.current?.showModal();
@@ -39,6 +44,7 @@ export default function CreateForm({ categories }) {
     defaultValues: {
       title: "",
       timeToMake: "",
+      servingSize: 1,
       category: "Main",
       description: "",
       ingredients: [],
@@ -73,6 +79,11 @@ export default function CreateForm({ categories }) {
 
       // TODO: add serving size
       // 2. Add the recipe to the database
+      let servingSize = 1;
+      if (Number(data.servingSize) > 0) {
+        servingSize = Number(data.servingSize);
+      }
+
       const recipeData: Omit<Recipe, "id"> = {
         title: data.title,
         timeToMake: data.timeToMake,
@@ -80,6 +91,7 @@ export default function CreateForm({ categories }) {
         description: data.description,
         ingredients: data.ingredients,
         instructions: data.instructions,
+        servingSize: servingSize,
         image: filePath,
         userId: userId as string,
         createdAt: new Date(),
@@ -111,6 +123,15 @@ export default function CreateForm({ categories }) {
               name="timeToMake"
               type="time"
               rules={{ required: "Time is required" }}
+            />
+          </div>
+
+          <div className="mb-4">
+            <Input
+              label="Serving Size"
+              name="servingSize"
+              rules={{ required: "Serving Size is required" }}
+              type="number"
             />
           </div>
 

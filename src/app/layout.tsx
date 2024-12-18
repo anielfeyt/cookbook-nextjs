@@ -26,17 +26,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  console.log("user from root layout", data.user);
 
   return (
     <html lang="en" data-theme="retro">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header user={user} />
+        <Header user={data.user} />
         <main className="min-h-dvh mb-8 mt-20 sm:mt-32">{children}</main>
         <footer className="py-4 px-4 bg-base-200 text-center">
           &copy; Copyright {new Date(Date.now()).getFullYear()}. Developed by

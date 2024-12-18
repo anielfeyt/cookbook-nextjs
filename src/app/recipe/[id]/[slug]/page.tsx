@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Button from "@/components/Button";
-import { deleteRecipe, getRecipeById } from "@/queries/recipe";
+import { getRecipeById } from "@/queries/recipe";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/services/supabase/server";
@@ -100,6 +99,11 @@ export default async function RecipePage({ params }: Props) {
                 <span className="font-medium ">
                   Category: {recipe?.categoryName}
                 </span>
+                {recipe?.servingSize && (
+                  <span className="font-medium ">
+                    Servings: {recipe?.servingSize}
+                  </span>
+                )}
               </div>
             </div>
           </div>
