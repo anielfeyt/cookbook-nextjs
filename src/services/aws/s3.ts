@@ -9,7 +9,7 @@ import {
 export async function listBuckets() {
   const client = new S3Client({
     forcePathStyle: true,
-    region: process.env.AWS_REGION,
+    region: process.env.REGION,
     endpoint: process.env.AWS_BUCKET_URL,
     credentials: {
       accessKeyId: process.env.RESEPTE_AWS_ACCESS_KEY_ID as string,
@@ -31,10 +31,10 @@ export async function listBuckets() {
 export async function uploadS3File(filePath: string, file: File) {
   const client = new S3Client({
     forcePathStyle: true,
-    region: process.env.AWS_REGION,
+    region: process.env.REGION,
     endpoint: process.env.AWS_BUCKET_URL,
     credentials: {
-      accessKeyId: process.env.BUKCET_ACCESS_KEY as string,
+      accessKeyId: process.env.BUCKET_ACCESS_KEY as string,
       secretAccessKey: process.env.BUCKET_SECRET_KEY as string,
     },
   });
