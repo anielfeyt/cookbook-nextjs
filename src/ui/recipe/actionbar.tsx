@@ -76,7 +76,7 @@ export default function ActionBar({ isUserRecipe, id, slug }: ActionBarProps) {
           </>
         )}
 
-        <button type="button" className="btn join-item btn-sm ">
+        {/* <button type="button" className="btn join-item btn-sm ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -92,7 +92,7 @@ export default function ActionBar({ isUserRecipe, id, slug }: ActionBarProps) {
             />
           </svg>
           Save
-        </button>
+        </button> */}
       </div>
       <Modal ref={modalRef} id="delete_modal" backdrop>
         <Modal.Header className="font-bold">Delete Recipe</Modal.Header>

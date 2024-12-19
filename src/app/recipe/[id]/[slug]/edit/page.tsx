@@ -11,18 +11,6 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id, slug } = await params;
-  const recipe = await getRecipeById(id);
-
-  return {
-    title: recipe?.title,
-    alternates: {
-      canonical: `/recipe/${id}/${slug}`,
-    },
-  };
-}
-
 export default async function EditRecipePage({ params }: Props) {
   const { id } = await params;
   const recipe = await getRecipeById(id);
@@ -42,9 +30,9 @@ export default async function EditRecipePage({ params }: Props) {
   }
 
   return (
-    <div className="container mx-auto px-4 max-w-screen-lg">
+    <>
       <h1 className="text-5xl font-bold mb-5">Update Recipe</h1>
       <UpdateForm recipe={recipe} categories={categories} />
-    </div>
+    </>
   );
 }

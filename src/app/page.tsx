@@ -1,8 +1,7 @@
-import RecipeCard from "@/components/RecipeCard";
 import { getAllRecipes } from "@/queries/recipe";
-import Link from "next/link";
+import RecipeGrid from "@/ui/recipes/recipe-grid";
 
-export default async function Home() {
+export default async function HomePage() {
   const recipes = await getAllRecipes();
 
   return (
@@ -11,17 +10,7 @@ export default async function Home() {
         <h1>All Recipes</h1>
       </div>
 
-      {(!recipes || recipes.length === 0) && <p>No recipes found</p>}
-
-      {recipes && (
-        <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
-          {recipes.map((recipe) => (
-            <Link href={`/recipe/${recipe.id}/${recipe.slug}`} key={recipe.id}>
-              <RecipeCard recipe={recipe} />
-            </Link>
-          ))}
-        </div>
-      )}
+      <RecipeGrid recipes={recipes} />
     </div>
   );
 }

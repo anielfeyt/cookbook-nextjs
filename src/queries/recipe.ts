@@ -42,7 +42,7 @@ export async function getAllRecipes() {
 
       // Create a string URL from the title
       const slug = kebabCase(recipe.title);
-      return { ...recipe, image: imageURL, slug };
+      return { ...recipe, imageSrc: imageURL, slug };
     });
   } catch (error) {
     console.error(error);
@@ -70,7 +70,7 @@ export async function getRecipesByUserId(userId: string) {
       // Create a string URL from the title
       const slug = kebabCase(recipe.title);
 
-      return { ...recipe, image: imageURL, slug };
+      return { ...recipe, imageSrc: imageURL, slug };
     });
   } catch (error) {
     console.error(error);
@@ -101,7 +101,10 @@ export async function getRecipeById(recipeId: string) {
     // Create a string URL from the title
     const slug = kebabCase(recipe.title);
 
-    return { ...recipe, image: imageURL, slug } as Recipe & { slug: string };
+    return { ...recipe, imageSrc: imageURL, slug } as Recipe & {
+      slug: string;
+      imageSrc: string;
+    };
   } catch (error) {
     console.error(error);
     throw new Response(`Failed to get the recipe with ID: ${recipeId}`, {

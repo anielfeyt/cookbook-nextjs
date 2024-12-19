@@ -1,47 +1,18 @@
-import RecipeCard from "@/components/RecipeCard";
 import { getRecipesByUserId } from "@/queries/recipe";
 import { createClient } from "@/services/supabase/server";
-import Link from "next/link";
+import RecipeGrid from "@/ui/recipes/recipe-grid";
 import { redirect } from "next/navigation";
 
 export default async function UserRecipesPage() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!data.user) {
     redirect("/login");
   }
 
-  const recipes = await getRecipesByUserId(user.id);
+  const recipes = await getRecipesByUserId(data.user.id);
 
-  return (
-    <div className="container mx-auto px-4">
-      <div className="mb-4">
-        <h1 className="text-5xl font-bold mb-5">My Recipes</h1>
-      </div>
-      <div className="mb-4">
-        <Link className="btn btn-primary" href="/recipe/create">
-          Create Recipe
-        </Link>
-      </div>
-      {(!recipes || recipes.length === 0) && (
-        <p>
-          You don&apos;t have any recipes. Start by creating one or saving some
-          from the feed.
-        </p>
-      )}
-      {recipes && (
-        <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
-          {recipes.map((recipe) => (
-            <Link href={`/recipe/${recipe.id}/${recipe.slug}`} key={recipe.id}>
-              <RecipeCard recipe={recipe} />
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <RecipeGrid recipes={recipes} />;
 }

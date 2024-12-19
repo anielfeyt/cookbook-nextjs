@@ -2,18 +2,19 @@ import { Recipe } from "@prisma/client";
 import Image from "next/image";
 
 type RecipeCardProps = {
-  recipe: Recipe;
+  recipe: Recipe & { imageSrc?: string };
 };
 
 function RecipeCard({ recipe }: RecipeCardProps) {
-  const { image, title, ingredients, timeToMake, servingSize } = recipe;
+  const { imageSrc, title, ingredients, timeToMake, servingSize } = recipe;
+
   return (
     <article className="recipe-card inline-block  sm:p-4 p-2 rounded-lg hover:bg-base-200 cursor-pointer  transition border border-accent">
       <div className="overflow-hidden rounded-lg mb-4 ">
         <Image
           width={300}
           height={300}
-          src={image || "/images/placeholder-recipe.jpg"}
+          src={imageSrc || "/images/placeholder-recipe.jpg"}
           alt={title}
           style={{
             width: "100%",

@@ -126,7 +126,7 @@ function Header({ user }: HeaderProps, ref: React.Ref<HTMLHeadElement>) {
                 open ? "left-full" : "left-0"
               }`}
             >
-              <div className="flex justify-end p-4">
+              <div className="flex justify-end p-4 text-white">
                 <button onClick={toggleMenu}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@ function Header({ user }: HeaderProps, ref: React.Ref<HTMLHeadElement>) {
                   </svg>
                 </button>
               </div>
-              <nav className="h-full">
+              <nav className="h-full text-white">
                 <ul className="flex flex-col items-center justify-center text-2xl gap-4 h-[calc(100%-156px)]">
                   {user ? (
                     <>
@@ -192,7 +192,7 @@ function Header({ user }: HeaderProps, ref: React.Ref<HTMLHeadElement>) {
                   ) : (
                     <li>
                       <button onClick={toggleMenu}>
-                        <Link className="btn btn-primary btn-sm" href="/login">
+                        <Link className="btn btn-primary btn-lg" href="/login">
                           Login
                         </Link>
                       </button>

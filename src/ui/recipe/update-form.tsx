@@ -58,7 +58,7 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
 
     try {
       const file = e?.target.image.files[0]; // Get the file from the event, not the data value
-      let filePath = "";
+      let filePath = recipe.image;
 
       if (file) {
         // 1. Upload the image to S3
@@ -67,8 +67,6 @@ export default function UpdateForm({ recipe, categories }: UpdateFormProps) {
         filePath = `${userId}/images/recipe-${milliseconds}.jpg`;
 
         await uploadS3File(filePath, file);
-      } else {
-        filePath = recipe.image as string;
       }
 
       // 2. Add the recipe to the database
