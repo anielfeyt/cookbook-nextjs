@@ -99,7 +99,9 @@ export default async function RecipePage({ params }: Props) {
       <div className="divider divider-accent"></div>
       <div>
         <h2 className="text-xl font-medium mt-8 mb-4">Description</h2>
-        <p className="mt-4 whitespace-pre-wrap">{recipe?.description}</p>
+        <p className="mt-4 whitespace-pre-wrap">
+          {recipe?.description || "No description."}
+        </p>
 
         <div>
           <h2 className="text-xl font-medium mt-8 mb-4">Ingredients</h2>

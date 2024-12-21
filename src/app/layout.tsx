@@ -30,8 +30,15 @@ export default async function RootLayout({
         <Header user={data.user} />
         <main className="min-h-dvh mb-8 mt-20 sm:mt-32">{children}</main>
         <footer className="py-4 px-4 bg-base-200 text-center">
-          &copy; Copyright {new Date(Date.now()).getFullYear()}. Developed by
-          Aniel Feyt.
+          &copy; Copyright {new Date(Date.now()).getFullYear()}. Developed by{" "}
+          <a
+            href="https://www.anielfeyt.com"
+            target="_blank"
+            className="underline"
+          >
+            Aniel Feyt
+          </a>
+          .
         </footer>
       </body>
     </html>
