@@ -1,5 +1,6 @@
 import { Recipe } from "@prisma/client";
 import Image from "next/image";
+import ImageLoader from "../ImageLoader";
 
 type RecipeCardProps = {
   recipe: Recipe & { imageSrc?: string };
@@ -22,6 +23,7 @@ function RecipeCard({ recipe }: RecipeCardProps) {
             objectFit: "cover",
             aspectRatio: "1/1",
           }}
+          placeholder={ImageLoader({ width: 300, height: 300 })}
         />
       </div>
 

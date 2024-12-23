@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "ionqgrbblxsnrjudfsgu.supabase.co",
       },
     ],
+    unoptimized: true,
   },
   transpilePackages: ["react-daisyui"],
   reactStrictMode: true,

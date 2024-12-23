@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createClient } from "@/services/supabase/server";
 import ActionBar from "@/ui/recipe/actionbar";
 import { notFound } from "next/navigation";
+import ImageLoader from "@/components/ImageLoader";
 
 type Props = {
   params: Promise<{ id: string; slug: string }>;
@@ -61,6 +62,7 @@ export default async function RecipePage({ params }: Props) {
               objectFit: "cover",
               aspectRatio: "1/1",
             }}
+            placeholder={ImageLoader({ width: 500, height: 500 })}
           />
         </div>
         <div className="h-full flex flex-col items-center justify-center">
